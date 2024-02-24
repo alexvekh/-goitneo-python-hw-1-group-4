@@ -26,13 +26,28 @@ def add_contact(args, contacts):
 
 def change_contact(args, contacts):
     name, phone = args
-    contacts[name] = phone
-    return "Contact chaged."
+    if name in contacts:
+        contacts[name] = phone
+        return "Contact updated."
+    else:
+        return "Sorry, {name} isn't exist."
 
-def get_contact(args, contacts):
+def show_phone(args, contacts):
     name = args
-    phone = contacts[name]
-    return "{name}: {phone}"
+    if name in contacts:
+        phone = contacts[name]
+        return "{name}: {phone}"
+    else:
+        return "Sorry, {name} isn't exist. Use 'add' for append this contact."
+    
+def show_all(contacts):
+    res = []
+    res.append("{:^20}".format("CONTACTS"))
+    res.append("{:^20}".format("-"*10))
+    for name, phone in contacts.items():
+        res.append("{:<8} {} ".format(name+":", phone))
+    res.append("{:^20}".format("="*20))
+    return "\n".join(res)
 
 def main():
     contacts = {}
@@ -52,12 +67,13 @@ def main():
         elif command == "change":
             print(change_contact(args, contacts))
         elif command == "phone":
-            print(get_contact(args, contacts))
+            print(show_phone(args, contacts))
         elif command == "all":
-            print("{:^20}".format("CONTACTS"))
-            for name, phone in contacts.items():
-                print("{:<8} {} ".format(name+":", phone))
-            print("{:>20} ".format("Done"))
+            print(show_all(contacts))
+            # print("{:^20}".format("CONTACTS"))
+            # for name, phone in contacts.items():
+            #     print("{:<8} {} ".format(name+":", phone))
+            # print("{:>20} ".format("Done"))
         else:
             print("Invalid command.")
 
